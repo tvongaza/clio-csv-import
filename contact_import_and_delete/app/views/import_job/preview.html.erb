@@ -1,0 +1,16 @@
+<%=javascript_include_tag "import_job" %>
+<div class="jumbotron">
+	<h3>Map Headers to Contact Fields</h3>
+	<%=form_tag import_job_create_path do %>
+			<div class="btn-group btn-group-justified">
+				<%@csv_arr.first.each do |elem|%>
+					<div class="btn-group">
+						<br><%= elem %><br>
+						<br><%= render 'import_job/form', :key => "#{elem}" %><br>
+				  </div>
+				<%end%>
+		  </div>
+		<br><%= submit_tag "Map", :class => "btn btn-primary"%><br>
+	<%end%>
+</div>
+

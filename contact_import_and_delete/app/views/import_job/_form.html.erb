@@ -1,0 +1,5 @@
+
+<%= select_tag("#{key}", options_for_select([['First', "first_name"], ['Last', "last_name"],["City","city"],["Street","street"],["Postal Code","postal_code"],["Province","province"],
+["Country","country"],["Phone Number","phone_number"],["Web Site Address","web_site"],["Email Address","email_address"],["Instant Messenger","instant_messenger"]])) %>
+
+<%= select_tag("#{key} type", options_for_select([["Work","Work"],["Home","Home"],["Other","Other"]])) %>

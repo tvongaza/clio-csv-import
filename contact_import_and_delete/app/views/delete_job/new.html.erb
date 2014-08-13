@@ -1,0 +1,62 @@
+<%= javascript_include_tag "delete_job" %>
+<div class="jumbotron">
+       <div class="row-fluid">
+        <div class="span2">
+          <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+              <br><button type="button" id="success-btn" data-loading-text="Loading..." class="btn btn-primary">
+               View Successful Imports
+              </button><br>
+              <br><button type="button" id="non-success-btn" data-loading-text="Loading..." class="btn btn-primary">
+               View Unuccessful Imports
+              </button><br>
+              <br>
+              <%= form_tag csv_download_show_path do %>
+                <%= hidden_field_tag 'file', Rails.root.join("tmp/successful/contacts_created.csv") %>
+                <%= submit_tag "Download Succcessful Imports", :class => "btn btn-primary"%>
+              <% end %>
+              <br>
+              <%= form_tag csv_download_show_path do %>
+                <%= hidden_field_tag 'file', Rails.root.join("tmp/unsuccessful/contacts_not_created.csv")%>
+                <%= submit_tag "Download Unsucccessful Imports", :class => "btn btn-primary"%>
+             <% end %>
+             <br>
+           </div>
+         </div>
+       </div>
+      
+       <div class="span10">
+        <br><table id="non-success-tbl" class="table table-striped">
+        <tr>
+         <%@non_success.headers.each do |header| %>
+          <th><%= header %></th>
+         <% end %> 
+        </tr>
+        <% @non_success.each do |row| %>
+    	  <tr>
+    	   <% row.each do |element| %>
+          <td><%= element[1] %></td>
+         <% end %>
+        </tr>
+        <% end %> 
+      </table>
+
+      <br><table id="success-tbl" class="table table-striped">
+        <tr>
+        <% @success.headers.each do |header| %>
+          <th><%= header %></th>
+        <% end %> 
+          <th>Remove</th>
+        </tr>
+        <% @success.each do |row| %>
+        <tr>
+         <% row.each do |element| %>
+           <td><%= element[1] %></td>
+         <% end %>
+           <td><%= button_tag "Delete", data:{:contact_id => row.first[1]},:class => "btn btn-primary"%></td>
+        </tr>
+        <% end %> 
+      </table>
+    </div>
+  </div>
+</div>

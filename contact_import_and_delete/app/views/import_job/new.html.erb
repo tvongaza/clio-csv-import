@@ -1,0 +1,7 @@
+<div class="jumbotron">
+	<h3>Select the .csv file you wish to import.</h3>
+	<%= form_tag import_job_preview_path, multipart: true do %>
+	  <%= file_field_tag '.csv', accept: 'text/csv'%>
+	  <br><%= submit_tag "Import CSV", :class => "btn btn-primary" %>
+	<%end%>
+</div>
