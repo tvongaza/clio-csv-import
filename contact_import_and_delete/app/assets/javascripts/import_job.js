@@ -3,18 +3,11 @@ $( document ).ready(function() {
 $(":input[name*='type']").hide(); 
     
     $('select:input').change(function(){
-    	var id = this.id+'_type'
-        if($.inArray($(this).val(),["web_site","email_address","instant_messenger","phone_number"])) {
-            $("[id = "+id+"]").show(); 
+        if($.inArray($(this).val(),["web_site","email_address","instant_messenger","phone_number"])!== -1) {
+            $("[id = "+this.id+"_type]").show(); 
         } else {
-            $("[id = "+id+"]").hide(); 
+            $("[id = "+this.id+"_type]").hide(); 
         } 
 })
-
-  $("select").selectBoxIt({
-
-    theme: "bootstrap"
-
-  });
 
 });

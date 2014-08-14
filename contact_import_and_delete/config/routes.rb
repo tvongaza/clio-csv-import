@@ -7,11 +7,11 @@ Rails.application.routes.draw do
 
   post 'delete_job/create' => 'delete_job#create'
 
-  root 'home#new'
+  root 'authorization#new'
   
-  get 'home/auth' => 'home#auth'
+  get 'authorization/create' => 'authorization#create'
   
-  get 'home/callback' => 'home#callback'
+  get 'authorization/show' => 'authorization#show'
   
   get 'import_job/new' => 'import_job#new'
   

@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   
   def require_token
   	unless session[:access_token].present?
-  		redirect_to root
+  		redirect_to root_path
   	end
   end
   
