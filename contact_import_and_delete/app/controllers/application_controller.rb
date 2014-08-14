@@ -7,9 +7,8 @@ class ApplicationController < ActionController::Base
   
   def client
   	if @client.nil?
-  		client_id = 'zg3lCfMCK2Qod4pMeC5PfwNDYSZfI7upfwqf713F'
-  		client_secret = 'wBBOCLREm9KtHaF6K44bNrGh39eQV3ZsisRY9s1O'
-  		access_token = "agkzn4QE2PwDfCXNq2eTpciwjJXYvleU0uaFn91s"
+  		client_id = APP_CONFIG['client_id']
+  		client_secret = APP_CONFIG['client_secret']
   		access_token = session[:access_token]
 
   		@client = ClioClient::Session.new({client_id: client_id, client_secret: client_secret})
@@ -23,6 +22,5 @@ class ApplicationController < ActionController::Base
   		redirect_to root_path
   	end
   end
-  
 
 end
