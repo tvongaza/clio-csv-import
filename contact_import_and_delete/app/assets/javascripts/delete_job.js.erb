@@ -1,0 +1,26 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+$( document ).ready(function() {
+        $('.table.table-striped').unbind('click');
+        $('.table.table-striped').on('click','.btn.btn-default',function(){
+            var rowRef = this;
+            var contact_id = $(this).attr("data-contact-id");
+            var contact = {id: contact_id};        
+            $.ajax({
+              url: '<%= contact_destroy_path %>',
+              type: 'POST',
+              data: contact,
+              dataType: "json",
+              error: function(){
+                alert("Couldn't Delete")
+              },
+              success: function(){
+                var tr = $(rowRef).closest('tr');
+                tr.css("background-color","#FF3700");
+                tr.fadeOut(400, function(){
+                  tr.remove();
+                }); 
+                return false;
+                }
+            });
+        });
+});

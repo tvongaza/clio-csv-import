@@ -1,28 +1,45 @@
 class DeleteJobController < ApplicationController
-	before_action :require_token
-	
-  def new
-  	@heading = "Contact Import Review"
-    if File.file?(Rails.root.join("tmp/successful/contacts_created.csv"))
-	 		@success = CSV.open(Rails.root.join("tmp/successful/contacts_created.csv"),:headers => true ).read
-	 	end
-    if File.file?(Rails.root.join("tmp/unsuccessful/contacts_not_created.csv"))
-	 		@non_success = CSV.open(Rails.root.join("tmp/unsuccessful/contacts_not_created.csv"),:headers => true ).read
-	 	end	 	
-  end
+  before_action :require_token
   
+  def new
+    @heading = "Contact Import Review"
+    @success = CSV.read(get_client_file("successful_imports"),:headers => true)    
+    @failure = CSV.read(get_client_file("unsuccessful_imports"),:headers => true)  
+  end
+
   def create
-  	if params[:id].present?
-    	person = client.contacts.find(params[:id].to_i)
-    	begin
-    	 if person.present?
-    	  person.destroy
-    	 end
-    	rescue ClioClient::BadRequest
-    		flash[:error] = "not successfully deleted"
-    		flash.now[:error] = "not successfully deleted"
-    	end	
-  	end
+    @heading = "Import Undo"
+    contacts_to_delete = parse_file(params[:csv]) #array of contacts to be deleted
+    @success_results, @failure_results = delete_contacts_through_api(contacts_to_delete)
+  end
+
+  private
+  
+  def parse_file(file)
+    contacts_to_delete = CSV.read(file.path,return_headers:false)
+    contacts_to_delete
+  end
+
+  def delete_contacts_through_api(contacts_to_delete)
+    create_client_file(nil,"successful_import_undos")
+    create_client_file(nil,"unsuccessful_import_undos")
+    contacts_to_delete.each do |contact|
+      person = client.contacts.find(contact[0].to_i)
+      begin
+        person.destroy
+        CSV.open(get_client_file("successful_import_undos"), "a+") do |csv| 
+              csv << contact
+        end
+      rescue ClioClient::BadRequest, NoMethodError
+        CSV.open(get_client_file("unsuccessful_import_undos"), "a+") do |csv| 
+              csv << contact
+        end
+      end
+    end
+    success_results = get_client_file("successful_import_undos")
+    failure_results = get_client_file("unsuccessful_import_undos")
+    return success_results, failure_results
   end
 
 end
+

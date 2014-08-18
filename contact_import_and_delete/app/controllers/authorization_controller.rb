@@ -5,18 +5,18 @@ class AuthorizationController < ApplicationController
   end
   
   def create
-  	redirect_to client.authorize_url(redirect_uri)
+    redirect_to client.authorize_url(redirect_uri)
   end
 
-	def show
-		@heading = "Authenticated"
+  def show
     token = client.authorize_with_code redirect_uri, params[:code]
-  	if client.authorized?
-   		session[:access_token] = token["access_token"]
- 	 else
-    	halt 401, "Not authorized\n"
- 	 end
-	end
+    if client.authorized?
+      session[:access_token] = token["access_token"]
+   else
+      render :file => "public/401", :status => :unauthorized
+   end
+   redirect_to import_job_new_path
+  end
 
   private
 

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  post 'contact/destroy'
 
   post 'csv_download/show'
 
@@ -7,17 +8,20 @@ Rails.application.routes.draw do
 
   post 'delete_job/create' => 'delete_job#create'
 
-  root 'authorization#new'
-  
+  root 'import_job#new'
+
+  get 'authorization/new' => 'authorization#new'
+
   get 'authorization/create' => 'authorization#create'
-  
+
   get 'authorization/show' => 'authorization#show'
-  
+
   get 'import_job/new' => 'import_job#new'
-  
+
   post 'import_job/preview' => 'import_job#preview'
-  
+
   post 'import_job/create' => 'import_job#create'
+
 
   
   

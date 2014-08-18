@@ -1,3 +1,10 @@
-<h1>Delete#create</h1>
-<p>Find me in app/views/delete/create.html.erb</p>
-<%=@params%>
+<br><div class="btn-group">
+	<%= form_tag csv_download_show_path do %>
+	  <%= hidden_field_tag 'file', "undo_success" %>
+	  <%= submit_tag "Download Successful Undo Imports", :class => "btn btn-primary"%>
+	<% end %>
+	<br><%= form_tag csv_download_show_path do %>
+	  <%= hidden_field_tag 'file', "undo_failure"%>
+	  <%= submit_tag "Download Unsuccessful Undo Imports", :class => "btn btn-primary"%>
+	<% end %>
+</div>
