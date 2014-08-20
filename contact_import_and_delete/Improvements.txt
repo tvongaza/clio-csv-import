@@ -1,0 +1,10 @@
+-The .csv file storage implmentation relies on storing the .csv file name in session, this should be changed to
+minimize the session data
+
+-There should be rake file to destroy the folders in tmp/client_folders after a determined time
+
+-The view for undo-import needs to be modified to be clearer, so that it includes the import_undo selection and is
+different from an import review. It should also be reachable without going through the import process
+
+-Multiple addresses and phone_numbers,email_addresses,instant_messengers and web_site types should be implemented for user
+flexibility
