@@ -23,7 +23,7 @@ class ImportJobController < ApplicationController
   private 
   
   def parse_and_create_file(params)
-      headers = headers = CSV.read(get_client_file("uploads"))[0]
+      headers = CSV.read(get_client_file("uploads"))[0]
       CSV.open(create_client_file(nil,"unsuccessful_imports"),"wb") do |csv|
         csv << headers
       end
@@ -57,6 +57,8 @@ class ImportJobController < ApplicationController
     CSV::Converters[:blank_to_nil] = lambda do |field| #converts all blank entries in csv to nil 
       field && field.empty? ? nil : field
     end
+    import_successes = []
+    import_failures = []
     csv_arr = CSV.read(get_client_file("uploads"),:headers => get_headers(params), :converters => [:all, :blank_to_nil] )
     csv_arr.delete(0) #csv_arr of type CSV::Table 
     csv_arr.each do |row| 
@@ -108,23 +110,29 @@ class ImportJobController < ApplicationController
         contact["instant_messengers"] = instant_messengers
         contact["addresses"] = addresses
         contact["type"] = "Person"
-        person = client.contacts.new(contact)    
+        person = client.contacts.new(contact)   
         begin
           person.save
           contact_arr.insert(0,person.id)
-          CSV.open(get_client_file("successful_imports"), "a+") do |csv| 
-            csv << contact_arr
-          end
+          import_successes.push(contact_arr)
         rescue ClioClient::BadRequest
-          CSV.open(get_client_file("unsuccessful_imports"), "a+") do |csv|
-            csv << contact_arr
-          end
+          import_failures.push(contact_arr)
         end         
-      end 
+      end
+      create_csv_results(import_successes,import_failures) 
+  end
+  
+  def create_csv_results(import_successes,import_failures)
+    CSV.open(get_client_file("successful_imports"), "a+") do |csv| 
+     import_successes.each do |row|
+       csv << row
+     end
+    end
+    CSV.open(get_client_file("unsuccessful_imports"), "a+") do |csv|
+      import_failures.each do |row|
+        csv << row
+      end
+    end
   end
 
 end
-
-
-
- 

@@ -1,5 +1,3 @@
-<%= javascript_include_tag "delete_job" %>
-<%= stylesheet_link_tag "delete_job_review" %>
 <div class="jumbotron" >
   <%= form_tag delete_job_create_path, multipart: true do %>
     <%= file_field_tag 'csv', accept: 'text/csv'%>

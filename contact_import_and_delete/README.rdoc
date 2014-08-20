@@ -1,28 +1,22 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails app for importing a .csv file of contacts into Clio
 
-Things you may want to cover:
+Set up and implementation details:
 
-* Ruby version
+* Ruby version 2.1.1
 
-* System dependencies
+* Set your client_id and client_secret in config/config.yml
 
-* Configuration
+* The current implementation allows for only one address per contact
 
-* Database creation
+* Multiple phone_numbers,email_addresses,instant_messengers and web_sites are implemented, however they will all be of type "Work"
 
-* Database initialization
+* The undo .csv import action relies on the .csv file containing the Clio contact ids in the first column
 
-* How to run the test suite
+* All the files for the current session will be stored in a sub-directory of tmp/client_folders with the session token as the folder name
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* The uploaded .csv files will have a time stamp appended to the original file name  
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+

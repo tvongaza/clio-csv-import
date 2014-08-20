@@ -1,14 +1,6 @@
-<% default_value = ""%>
-<% matched = false%>
-<% fn = false %>
-<% ln = false %>
-<%["first_name","last_name","title","city","province","postal_code","country","street","phone_number","web_site","email_address","instant_messenger"].each do |value| %>  
-  <%value.split("_").each do |sub_string|%>
-    <%break if matched == true%>
-	    <%((default_value = value unless ((value == "first_name" && fn == true)||(value == "last_name" && ln == true))) && (matched = true)) if key.split(" ").any? {|word| sub_string.casecmp(word) == 0}%>
-	    <%fn = true if value == "first_name"%>
-	    <%ln = true if value == "last_name"%>
-    <%end%>
-<%end%>
+
+<% default_value = FuzzyMatch.new(["first_name","last_name","title","city","province","postal_code","country","street","phone_number","web_site","email_address","instant_messenger"]).find(key)%>
+
+
 <%= select_tag("#{key}", options_for_select([["",nil],['First Name', "first_name"], ['Last Name', "last_name"],["Title","title"],["City","city"],["Street","street"],["Postal Code","postal_code"],["Province","province"],
 ["Country","country"],["Phone Number","phone_number"],["Web Site Address","web_site"],["Email Address","email_address"],["Instant Messenger Address","instant_messenger"]], selected: default_value),:class => "btn btn-default dropdown-toggle") %>

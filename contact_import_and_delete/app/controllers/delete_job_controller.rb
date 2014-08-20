@@ -16,7 +16,7 @@ class DeleteJobController < ApplicationController
   private
   
   def parse_file(file)
-    contacts_to_delete = CSV.read(file.path,return_headers:false)
+    contacts_to_delete = CSV.read(file.path,return_headers:false)#assuming that the client_id is in the first column of the csv so no need to parse headers
     contacts_to_delete
   end
 
@@ -24,7 +24,7 @@ class DeleteJobController < ApplicationController
     create_client_file(nil,"successful_import_undos")
     create_client_file(nil,"unsuccessful_import_undos")
     contacts_to_delete.each do |contact|
-      person = client.contacts.find(contact[0].to_i)
+      person = client.contacts.find(contact[0].to_i)#assuming that the client_id is in the first column of the csv
       begin
         person.destroy
         CSV.open(get_client_file("successful_import_undos"), "a+") do |csv| 
